@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>xxx</title>
+    <script>
+window.onload = function(){
+    importHtml();
+}
+function importHtml(){
+    var importRoots = document.querySelectorAll('[h-import]');
+    for(var i=0 ; i < importRoots.length ; i++){
+        var importRoot = importRoots[i];
+        (function(impRoot){
+            loadFile(impRoot.getAttribute("h-import"),
+                function (r) {
+                    impRoot.innerHTML = r;
+                }
+            );
+        })(importRoot);
+
+        importRoot.removeAttribute("h-import");
+    }
+}
+
+function loadFile(url,successCallback, errorCallBack){
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                successCallback(this.responseText);
+            }
+            if (this.status == 404 && errorCallBack) {
+                errorCallBack("file not found");
+            }
+        }
+    }
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+    </script>
+</head>
+<body>
+
+    <div>111111</div>
+    <div h-import="a.html">
+    </div>
+    <div>222222</div>
+    <div h-import="a.html">
+    </div>
+
+</body>
+</html>
